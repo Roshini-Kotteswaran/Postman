@@ -1,0 +1,336 @@
+{
+	"info": {
+		"_postman_id": "64a3f0e0-e20d-47da-8292-9b1f9dc4eef2",
+		"name": "Test API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "32593682"
+	},
+	"item": [
+		{
+			"name": "Register Qtrip",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var user_Email = pm.variables.replaceIn(\"{{$randomEmail}}\");\r",
+							"console.log(user_Email);\r",
+							"pm.environment.set(\"Email\",user_Email);\r",
+							"\r",
+							"\r",
+							"var user_Password = pm.variables.replaceIn(\"{{$randomPassword}}\");\r",
+							"console.log(user_Password);\r",
+							"pm.environment.set(\"Password\", user_Password);\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{ \r\n\"email\" : \"{{Email}}\",\r\n\"password\" : \"{{Password}}\",\r\n\"confirmpassword\" : \"{{Password}}\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{server}}/api/v1/register",
+					"host": [
+						"{{server}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"register"
+					],
+					"query": [
+						{
+							"key": "prettyPrint",
+							"value": "false",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Login Qtrip",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var res = pm.response.json();\r",
+							"console.log(res)\r",
+							"pm.test(\"Validation\", function(){\r",
+							"    pm.expect(res.success).to.be.true;\r",
+							"})\r",
+							"\r",
+							"var token = res.data.token;\r",
+							"console.log(token);\r",
+							"pm.environment.set(\"Token\", token);\r",
+							"\r",
+							"var id = res.data.id;\r",
+							"console.log(id);\r",
+							"pm.environment.set(\"ID\", id);\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"email\": \"{{Email}}\",\r\n    \"password\": \"{{Password}}\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{server}}/api/v1/login",
+					"host": [
+						"{{server}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"login"
+					],
+					"query": [
+						{
+							"key": "prettyPrint",
+							"value": "false",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Query Params",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://content-xflix-backend.azurewebsites.net/v1/videos?title=Sample Video",
+					"protocol": "https",
+					"host": [
+						"content-xflix-backend",
+						"azurewebsites",
+						"net"
+					],
+					"path": [
+						"v1",
+						"videos"
+					],
+					"query": [
+						{
+							"key": "title",
+							"value": "Sample Video"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Path Param",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true,
+				"disabledSystemHeaders": {}
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://content-xflix-backend.azurewebsites.net/v1/videos/65ace32a3b676f0082fbeb1c",
+					"protocol": "https",
+					"host": [
+						"content-xflix-backend",
+						"azurewebsites",
+						"net"
+					],
+					"path": [
+						"v1",
+						"videos",
+						"65ace32a3b676f0082fbeb1c"
+					],
+					"query": [
+						{
+							"key": "title",
+							"value": "\"Sample Video\"",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Headers",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://content-xflix-backend.azurewebsites.net/v1/videos/",
+					"protocol": "https",
+					"host": [
+						"content-xflix-backend",
+						"azurewebsites",
+						"net"
+					],
+					"path": [
+						"v1",
+						"videos",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Registration",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var response1 = pm.response.json();\r",
+							"console.log(response1);\r",
+							"pm.test(\"Validation Success\", function(){\r",
+							"    pm.expect(response1.success).to.be.true;\r",
+							"})\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{Token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"userId\":\"{{ID}}\",\r\n    \"name\":\"Test User\",\r\n    \"date\":\"2024-15-09\",\r\n    \"person\":\"1\",\r\n    \"adventure\":\"{{Ad_ID}}\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{server}}/api/v1/reservations/new",
+					"host": [
+						"{{server}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"reservations",
+						"new"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Adventures",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://content-qtripdynamic-qa-backend.azurewebsites.net/api/v1/adventures?city=bengaluru",
+					"protocol": "https",
+					"host": [
+						"content-qtripdynamic-qa-backend",
+						"azurewebsites",
+						"net"
+					],
+					"path": [
+						"api",
+						"v1",
+						"adventures"
+					],
+					"query": [
+						{
+							"key": "name",
+							"value": "Niaboytown",
+							"disabled": true
+						},
+						{
+							"key": "costPerHead",
+							"value": "4003",
+							"disabled": true
+						},
+						{
+							"key": "city",
+							"value": "bengaluru"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}
